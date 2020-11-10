@@ -1,18 +1,18 @@
 import * as THREE from "three";
+import { DragControls } from "../controls/PanoramaController";
+
+declare global {
+  interface Window {
+    controls: any;
+  }
+}
+
+const controls = (window.controls = new DragControls());
 
 let camera: THREE.PerspectiveCamera,
   scene: THREE.Scene,
   renderer: THREE.WebGLRenderer,
   facing: THREE.Vector3;
-
-let onPointerDownMouseX = 0,
-  onPointerDownMouseY = 0,
-  lon = 0,
-  onPointerDownLon = 0,
-  lat = 0,
-  onPointerDownLat = 0,
-  phi = 0,
-  theta = 0;
 
 export { init, animate };
 
@@ -42,63 +42,7 @@ function init(canvas: HTMLCanvasElement) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  canvas.style.touchAction = "none";
-  canvas.addEventListener(
-    "pointerdown",
-    (event) => onPointerDown(event, canvas),
-    false
-  );
-
-  canvas.addEventListener("wheel", onDocumentMouseWheel, false);
-
-  canvas.addEventListener(
-    "dragover",
-    function (event) {
-      event.preventDefault();
-      if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
-    },
-    false
-  );
-
-  canvas.addEventListener(
-    "dragenter",
-    function () {
-      canvas.style.opacity = "0.5";
-    },
-    false
-  );
-
-  canvas.addEventListener(
-    "dragleave",
-    function () {
-      canvas.style.opacity = "1";
-    },
-    false
-  );
-
-  canvas.addEventListener(
-    "drop",
-    function (event) {
-      event.preventDefault();
-      if (event.dataTransfer) {
-        const reader = new FileReader();
-        reader.addEventListener(
-          "load",
-          function (event) {
-            if (material.map) {
-              material.map.image.src = event.target?.result;
-              material.map.needsUpdate = true;
-            }
-          },
-          false
-        );
-        reader.readAsDataURL(event.dataTransfer.files[0]);
-      }
-
-      canvas.style.opacity = "1";
-    },
-    false
-  );
+  controls.init(canvas, material, camera);
 
   window.addEventListener("resize", onWindowResize, false);
 }
@@ -110,60 +54,19 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onPointerDown(event: PointerEvent, canvas: HTMLCanvasElement) {
-  if (event.isPrimary === false) return;
-
-  onPointerDownMouseX = event.clientX;
-  onPointerDownMouseY = event.clientY;
-
-  onPointerDownLon = lon;
-  onPointerDownLat = lat;
-
-  canvas.addEventListener("pointermove", onPointerMove, false);
-  canvas.addEventListener(
-    "pointerup",
-    (event) => onPointerUp(event, canvas),
-    false
-  );
-}
-
-function onPointerMove(event: PointerEvent) {
-  if (event.isPrimary === false) return;
-
-  lon = (onPointerDownMouseX - event.clientX) * 0.1 + onPointerDownLon;
-  lat = (event.clientY - onPointerDownMouseY) * 0.1 + onPointerDownLat;
-}
-
-function onPointerUp(event: PointerEvent, canvas: HTMLCanvasElement) {
-  if (event.isPrimary === false) return;
-
-  canvas.removeEventListener("pointermove", onPointerMove);
-  canvas.removeEventListener("pointerup", (event) =>
-    onPointerUp(event, canvas)
-  );
-}
-
-function onDocumentMouseWheel(event: WheelEvent) {
-  const fov = camera.fov + event.deltaY * 0.05;
-
-  camera.fov = THREE.MathUtils.clamp(fov, 10, 75);
-
-  camera.updateProjectionMatrix();
-}
-
 function animate() {
   requestAnimationFrame(animate);
   update();
 }
 
 function update() {
-  lat = Math.max(-85, Math.min(85, lat));
-  phi = THREE.MathUtils.degToRad(90 - lat);
-  theta = THREE.MathUtils.degToRad(lon);
+  controls.lat = Math.max(-85, Math.min(85, controls.lat));
+  controls.phi = THREE.MathUtils.degToRad(90 - controls.lat);
+  controls.theta = THREE.MathUtils.degToRad(controls.lon);
 
-  facing.x = 500 * Math.sin(phi) * Math.cos(theta);
-  facing.y = 500 * Math.cos(phi);
-  facing.z = 500 * Math.sin(phi) * Math.sin(theta);
+  facing.x = 500 * Math.sin(controls.phi) * Math.cos(controls.theta);
+  facing.y = 500 * Math.cos(controls.phi);
+  facing.z = 500 * Math.sin(controls.phi) * Math.sin(controls.theta);
 
   camera.lookAt(facing);
 
