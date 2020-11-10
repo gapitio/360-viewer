@@ -1,5 +1,5 @@
 <script>
-  import Viewer from "./components/Viewer/index.svelte";
+  import Viewer from "./components/Viewer/Viewer.svelte";
 </script>
 
 <style>
