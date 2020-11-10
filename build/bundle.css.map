@@ -2,10 +2,10 @@
   "version": 3,
   "file": "bundle.css",
   "sources": [
-    "index.svelte"
+    "Viewer.svelte"
   ],
   "sourcesContent": [
-    "<script lang=\"ts\">import { onMount } from \"svelte\";\nimport { init, animate } from \"./viewer\";\nlet canvas;\nonMount(() => {\n    init(canvas);\n    animate();\n});\n</script>\n\n<style>\n  canvas {\n    display: block;\n  }\n</style>\n\n<canvas bind:this={canvas} />\n"
+    "<script lang=\"ts\">import { onMount } from \"svelte\";\nimport { init, animate } from \"./Viewer\";\nlet canvas;\nonMount(() => {\n    init(canvas);\n    animate();\n});\n</script>\n\n<style>\n  canvas {\n    display: block;\n  }\n</style>\n\n<canvas bind:this={canvas} />\n"
   ],
   "names": [],
   "mappings": "AAUE,MAAM,cAAC,CAAC,AACN,OAAO,CAAE,KAAK,AAChB,CAAC"
