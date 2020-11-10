@@ -43,52 +43,59 @@ function init(canvas: HTMLCanvasElement) {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   canvas.style.touchAction = "none";
-  canvas.addEventListener("pointerdown", onPointerDown, false);
+  canvas.addEventListener(
+    "pointerdown",
+    (event) => onPointerDown(event, canvas),
+    false
+  );
 
-  document.addEventListener("wheel", onDocumentMouseWheel, false);
+  canvas.addEventListener("wheel", onDocumentMouseWheel, false);
 
-  document.addEventListener(
+  canvas.addEventListener(
     "dragover",
     function (event) {
       event.preventDefault();
-      event.dataTransfer.dropEffect = "copy";
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "copy";
     },
     false
   );
 
-  document.addEventListener(
+  canvas.addEventListener(
     "dragenter",
     function () {
-      document.body.style.opacity = "0.5";
+      canvas.style.opacity = "0.5";
     },
     false
   );
 
-  document.addEventListener(
+  canvas.addEventListener(
     "dragleave",
     function () {
-      document.body.style.opacity = "1";
+      canvas.style.opacity = "1";
     },
     false
   );
 
-  document.addEventListener(
+  canvas.addEventListener(
     "drop",
     function (event) {
       event.preventDefault();
+      if (event.dataTransfer) {
+        const reader = new FileReader();
+        reader.addEventListener(
+          "load",
+          function (event) {
+            if (material.map) {
+              material.map.image.src = event.target?.result;
+              material.map.needsUpdate = true;
+            }
+          },
+          false
+        );
+        reader.readAsDataURL(event.dataTransfer.files[0]);
+      }
 
-      const reader = new FileReader();
-      reader.addEventListener(
-        "load",
-        function (event) {
-          material.map.image.src = event.target.result;
-          material.map.needsUpdate = true;
-        },
-        false
-      );
-      reader.readAsDataURL(event.dataTransfer.files[0]);
-
-      document.body.style.opacity = "1";
+      canvas.style.opacity = "1";
     },
     false
   );
@@ -105,7 +112,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onPointerDown(event) {
+function onPointerDown(event: PointerEvent, canvas: HTMLCanvasElement) {
   if (event.isPrimary === false) return;
 
   onPointerDownMouseX = event.clientX;
@@ -114,25 +121,31 @@ function onPointerDown(event) {
   onPointerDownLon = lon;
   onPointerDownLat = lat;
 
-  document.addEventListener("pointermove", onPointerMove, false);
-  document.addEventListener("pointerup", onPointerUp, false);
+  canvas.addEventListener("pointermove", onPointerMove, false);
+  canvas.addEventListener(
+    "pointerup",
+    (event) => onPointerUp(event, canvas),
+    false
+  );
 }
 
-function onPointerMove(event) {
+function onPointerMove(event: PointerEvent) {
   if (event.isPrimary === false) return;
 
   lon = (onPointerDownMouseX - event.clientX) * 0.1 + onPointerDownLon;
   lat = (event.clientY - onPointerDownMouseY) * 0.1 + onPointerDownLat;
 }
 
-function onPointerUp(event) {
+function onPointerUp(event: PointerEvent, canvas: HTMLCanvasElement) {
   if (event.isPrimary === false) return;
 
-  document.removeEventListener("pointermove", onPointerMove);
-  document.removeEventListener("pointerup", onPointerUp);
+  canvas.removeEventListener("pointermove", onPointerMove);
+  canvas.removeEventListener("pointerup", (event) =>
+    onPointerUp(event, canvas)
+  );
 }
 
-function onDocumentMouseWheel(event) {
+function onDocumentMouseWheel(event: WheelEvent) {
   const fov = camera.fov + event.deltaY * 0.05;
 
   camera.fov = THREE.MathUtils.clamp(fov, 10, 75);
