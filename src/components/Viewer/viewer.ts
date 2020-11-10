@@ -19,7 +19,7 @@ export { init, animate };
 function init(canvas: HTMLCanvasElement) {
   camera = new THREE.PerspectiveCamera(
     75,
-    window.innerWidth / window.innerHeight,
+    canvas.clientWidth / canvas.clientHeight,
     1,
     1100
   );
@@ -99,8 +99,6 @@ function init(canvas: HTMLCanvasElement) {
     },
     false
   );
-
-  //
 
   window.addEventListener("resize", onWindowResize, false);
 }
