@@ -1,0 +1,28 @@
+# This workflow validates the code, runs lints and prettier
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Validate code
+
+on:
+  push:
+    # Run tests for all branches except master.
+    branches: ["*", "!master"]
+
+  # Run tests for any PRs.
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - run: npm ci
+      - run: npm run validate
+      - run: npm run lint
+      - run: npm run build
