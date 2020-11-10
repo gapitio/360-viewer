@@ -162,9 +162,6 @@
 
       camera.lookAt(facing);
 
-      // distortion
-      camera.position.copy(facing).negate();
-
       renderer.render(scene, camera);
     }
   });
