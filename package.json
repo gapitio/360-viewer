@@ -5,8 +5,8 @@
     "build": "npm run clean && rollup -c",
     "clean": "rimraf public/build/",
     "dev": "npm run clean && rollup -c -w",
-    "prettier": "prettier --check .",
-    "prettier:fix": "prettier --write .",
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write .",
     "start": "sirv public",
     "validate": "svelte-check"
   },
