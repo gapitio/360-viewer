@@ -16,7 +16,7 @@ let onPointerDownMouseX = 0,
 
 export { init, animate };
 
-function init(canvas: HTMLCanvasElement, container: HTMLDivElement) {
+function init(canvas: HTMLCanvasElement) {
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
@@ -42,8 +42,8 @@ function init(canvas: HTMLCanvasElement, container: HTMLDivElement) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  container.style.touchAction = "none";
-  container.addEventListener("pointerdown", onPointerDown, false);
+  canvas.style.touchAction = "none";
+  canvas.addEventListener("pointerdown", onPointerDown, false);
 
   document.addEventListener("wheel", onDocumentMouseWheel, false);
 

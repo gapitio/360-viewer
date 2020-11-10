@@ -2,10 +2,10 @@
   import { onMount } from "svelte";
   import { init, animate } from "./viewer";
 
-  let canvas: HTMLCanvasElement, container: HTMLDivElement;
+  let canvas: HTMLCanvasElement;
 
   onMount(() => {
-    init(canvas, container);
+    init(canvas);
     animate();
   });
 </script>
@@ -16,4 +16,4 @@
   }
 </style>
 
-<div bind:this={container}><canvas bind:this={canvas} /></div>
+<canvas bind:this={canvas} />
