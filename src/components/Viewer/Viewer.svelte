@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { init, animate } from "./viewer";
+  import { init, animate } from "./Viewer";
 
   let canvas: HTMLCanvasElement;
 
