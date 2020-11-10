@@ -1,8 +1,8 @@
-<script lang="ts">
-  import Image360View from "./Image360View.svelte";
+<script>
+  import Viewer from "./Viewer/index.svelte";
 </script>
 
 <style>
 </style>
 
-<Image360View />
+<Viewer />
