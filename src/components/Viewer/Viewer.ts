@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { DragControls } from "../controls/PanoramaController";
+import { DragControls } from "../controllers/PanoramaController";
 
 declare global {
   interface Window {
