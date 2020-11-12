@@ -2,11 +2,11 @@
   "version": 3,
   "file": "bundle.css",
   "sources": [
-    "Viewer.svelte"
+    "PanoramaViewer.svelte"
   ],
   "sourcesContent": [
-    "<script lang=\"ts\">import { onMount } from \"svelte\";\nimport { init, animate } from \"./Viewer\";\nlet canvas;\nonMount(() => {\n    init(canvas);\n    animate();\n});\n</script>\n\n<style>\n  canvas {\n    display: block;\n  }\n</style>\n\n<canvas bind:this={canvas} />\n"
+    "<script lang=\"ts\">import DragAndDrop from \"./../../DragAndDrop/DragAndDrop.svelte\";\nimport { onMount } from \"svelte\";\nimport { PanoramaViewer } from \"./PanoramaViewer\";\nlet width = window.innerWidth;\nlet height = window.innerHeight;\nconst panoramaViewer = new PanoramaViewer();\n// When the height or width of the container changes\n// set the size of the renderer to that.\n$: (height || width) && panoramaViewer.setSize(width, height);\nfunction loadFunction(event) {\n    var _a;\n    panoramaViewer.updateImage((_a = event.target) === null || _a === void 0 ? void 0 : _a.result);\n}\nonMount(() => {\n    panoramaViewer.setSize(width, height);\n});\n</script>\n\n<style>\n  canvas {\n    display: block;\n  }\n\n  .panorama-wrapper {\n    height: 100%;\n    width: 100%;\n    overflow: hidden;\n  }\n</style>\n\n<DragAndDrop {loadFunction}>\n  <div\n    class=\"panorama-wrapper\"\n    bind:clientWidth={width}\n    bind:clientHeight={height}>\n    <canvas\n      use:panoramaViewer.init\n      on:wheel={panoramaViewer.controls?.onMouseWheel}\n      on:pointerdown={panoramaViewer.controls?.onPointerDown} />\n  </div>\n</DragAndDrop>\n"
   ],
   "names": [],
-  "mappings": "AAUE,MAAM,cAAC,CAAC,AACN,OAAO,CAAE,KAAK,AAChB,CAAC"
+  "mappings": "AAmBE,MAAM,cAAC,CAAC,AACN,OAAO,CAAE,KAAK,AAChB,CAAC,AAED,iBAAiB,cAAC,CAAC,AACjB,MAAM,CAAE,IAAI,CACZ,KAAK,CAAE,IAAI,CACX,QAAQ,CAAE,MAAM,AAClB,CAAC"
 }
