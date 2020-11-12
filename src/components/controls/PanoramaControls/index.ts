@@ -48,10 +48,15 @@ class PanoramaControls {
   onPointerMove = (event: PointerEvent) => {
     if (event.isPrimary === false) return;
 
+    const height = this.canvas?.clientHeight ?? 1000;
+    const delta = (this.camera?.fov ?? 90) / height;
+
     this.lon =
-      (this.onPointerDownMouseX - event.clientX) * 0.1 + this.onPointerDownLon;
+      (this.onPointerDownMouseX - event.clientX) * delta +
+      this.onPointerDownLon;
     this.lat =
-      (event.clientY - this.onPointerDownMouseY) * 0.1 + this.onPointerDownLat;
+      (event.clientY - this.onPointerDownMouseY) * delta +
+      this.onPointerDownLat;
   };
 
   onPointerUp = (event: PointerEvent) => {
@@ -65,7 +70,7 @@ class PanoramaControls {
 
   onMouseWheel = (event: WheelEvent) => {
     if (this.camera) {
-      const fov = this.camera.fov + event.deltaY * (this.zoomSensitivity / 100);
+      const fov = this.camera.fov + event.deltaY * this.zoomSensitivity;
 
       this.camera.fov = MathUtils.clamp(fov, this.fovMin, this.fovMax);
 
