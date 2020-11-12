@@ -7,10 +7,12 @@
 
   function onDrop(event: DragEvent) {
     event.preventDefault();
-    if (event.dataTransfer) {
+    if (event.dataTransfer && event.dataTransfer.files[0]) {
       const reader = new FileReader();
       reader.addEventListener("load", loadFunction, false);
       reader.readAsDataURL(event.dataTransfer.files[0]);
+    } else {
+      console.warn("Bad file");
     }
 
     dragAndDropWrapper.style.opacity = "1";
