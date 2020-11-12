@@ -9,19 +9,22 @@ import {
   Vector3,
   WebGLRenderer,
 } from "three";
-import type { PanoramaControls } from "../controls/PanoramaControls";
+import { PanoramaControls } from "../../controls/PanoramaControls";
 
-class ViewerCore {
+class PanoramaViewer {
+  canvas: HTMLCanvasElement | undefined;
+  controls: PanoramaControls | undefined;
+
   camera = new PerspectiveCamera();
   scene = new Scene();
   renderer = new WebGLRenderer();
   facing = new Vector3();
   panorama: Mesh<SphereBufferGeometry, MeshBasicMaterial> | undefined;
-  controls: PanoramaControls | undefined;
 
-  constructor() {}
+  init(canvas: HTMLCanvasElement, { fov = 70 } = {}) {
+    this.canvas = canvas;
+    this.camera.fov = fov;
 
-  init = (canvas: HTMLCanvasElement, { fov = 70 } = {}) => {
     const geometry = new SphereBufferGeometry(500, 60, 40);
     // invert the geometry on the x-axis so that all of the faces point inward
     geometry.scale(-1, 1, 1);
@@ -35,12 +38,11 @@ class ViewerCore {
 
     this.renderer = new WebGLRenderer({ canvas: canvas });
 
-    this.camera.fov = fov;
-  };
+    this.controls = new PanoramaControls();
+    this.controls.init(this.canvas, this.camera);
 
-  addControls = (controls: PanoramaControls) => {
-    this.controls = controls;
-  };
+    this.animate();
+  }
 
   updateImage = (imageSrc: any) => {
     if (this.panorama && this.panorama.material.map) {
@@ -64,7 +66,7 @@ class ViewerCore {
     this.update();
   };
 
-  update = () => {
+  update() {
     if (this.controls) {
       this.controls.lat = Math.max(-85, Math.min(85, this.controls.lat));
       this.controls.phi = MathUtils.degToRad(90 - this.controls.lat);
@@ -80,7 +82,7 @@ class ViewerCore {
     this.camera.lookAt(this.facing);
 
     this.renderer.render(this.scene, this.camera);
-  };
+  }
 }
 
-export { ViewerCore };
+export { PanoramaViewer };
