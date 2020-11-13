@@ -4,10 +4,19 @@ class PanoramaControls {
   camera: PerspectiveCamera | undefined;
   canvas: HTMLCanvasElement | undefined;
 
+  isUserInteracting = false;
+
   lon = 0;
   lat = 0;
   phi = 0;
   theta = 0;
+
+  prevLon = 0;
+  prevLat = 0;
+
+  lonVelocity = 0;
+  latVelocity = 0;
+  dampingFactor = 0.05;
 
   onPointerDownMouseX = 0;
   onPointerDownMouseY = 0;
@@ -39,6 +48,8 @@ class PanoramaControls {
     this.onPointerDownLon = this.lon;
     this.onPointerDownLat = this.lat;
 
+    this.isUserInteracting = true;
+
     if (this.canvas) {
       this.canvas.addEventListener("pointermove", this.onPointerMove);
       this.canvas.addEventListener("pointerup", this.onPointerUp);
@@ -61,6 +72,8 @@ class PanoramaControls {
 
   onPointerUp = (event: PointerEvent) => {
     if (event.isPrimary === false) return;
+
+    this.isUserInteracting = false;
 
     if (this.canvas) {
       this.canvas.removeEventListener("pointermove", this.onPointerMove);
