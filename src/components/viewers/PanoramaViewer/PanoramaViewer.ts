@@ -1,4 +1,5 @@
 import {
+  Euler,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
@@ -21,7 +22,10 @@ class PanoramaViewer {
   facing = new Vector3();
   panorama: Mesh<SphereBufferGeometry, MeshBasicMaterial> | undefined;
 
-  init(canvas: HTMLCanvasElement, { fov = 70 } = {}) {
+  lastFrameTime = Date.now();
+  deltaFrameTime = 0;
+
+  init(canvas: HTMLCanvasElement, { fov = 90 } = {}) {
     this.canvas = canvas;
     this.camera.fov = fov;
 
@@ -68,15 +72,42 @@ class PanoramaViewer {
 
   update() {
     if (this.controls) {
+      // Get time since last frame
+      const now = Date.now();
+      this.deltaFrameTime = now - this.lastFrameTime;
+
+      if (this.controls.isUserInteracting) {
+        // Get distance travelled since last frame
+        const dLon = this.controls.lon - this.controls.prevLon;
+        const dLat = this.controls.lat - this.controls.prevLat;
+        // velocity = distance / time
+        this.controls.lonVelocity = dLon / this.deltaFrameTime;
+        this.controls.latVelocity = dLat / this.deltaFrameTime;
+      } else {
+        // old position + ( velocity * time ) = new position
+        this.controls.lon += this.controls.lonVelocity * this.deltaFrameTime;
+        this.controls.lat += this.controls.latVelocity * this.deltaFrameTime;
+        this.controls.lonVelocity *= 1 - this.controls.dampingFactor;
+        this.controls.latVelocity *= 1 - this.controls.dampingFactor;
+      }
+
+      // Update for next frame
+      this.lastFrameTime = now;
+      this.controls.prevLon = this.controls.lon;
+      this.controls.prevLat = this.controls.lat;
+
       this.controls.lat = Math.max(-85, Math.min(85, this.controls.lat));
+
       this.controls.phi = MathUtils.degToRad(90 - this.controls.lat);
       this.controls.theta = MathUtils.degToRad(this.controls.lon);
 
+      console.log(Math.sin(this.controls.phi) * Math.cos(this.controls.theta));
+
       this.facing.x =
-        500 * Math.sin(this.controls.phi) * Math.cos(this.controls.theta);
-      this.facing.y = 500 * Math.cos(this.controls.phi);
+        Math.sin(this.controls.phi) * Math.cos(this.controls.theta);
+      this.facing.y = Math.cos(this.controls.phi);
       this.facing.z =
-        500 * Math.sin(this.controls.phi) * Math.sin(this.controls.theta);
+        Math.sin(this.controls.phi) * Math.sin(this.controls.theta);
     }
 
     this.camera.lookAt(this.facing);
