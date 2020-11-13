@@ -14,7 +14,7 @@ env:
 jobs:
   # Push image to docker.gapit.io.
   # See also https://docs.docker.com/docker-hub/builds/
-  push:
+  publish:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
