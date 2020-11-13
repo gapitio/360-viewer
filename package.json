@@ -7,7 +7,7 @@
     "dev": "npm run clean && rollup -c -w",
     "lint": "prettier --check .",
     "lint:fix": "prettier --write .",
-    "start": "sirv public",
+    "start": "sirv public --host",
     "validate": "svelte-check"
   },
   "devDependencies": {
