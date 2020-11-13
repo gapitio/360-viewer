@@ -101,8 +101,6 @@ class PanoramaViewer {
       this.controls.phi = MathUtils.degToRad(90 - this.controls.lat);
       this.controls.theta = MathUtils.degToRad(this.controls.lon);
 
-      console.log(Math.sin(this.controls.phi) * Math.cos(this.controls.theta));
-
       this.facing.x =
         Math.sin(this.controls.phi) * Math.cos(this.controls.theta);
       this.facing.y = Math.cos(this.controls.phi);
