@@ -83,7 +83,7 @@ class PanoramaControls {
 
   onMouseWheel = (event: WheelEvent) => {
     if (this.camera) {
-      const fov = this.camera.fov + event.deltaY * this.zoomSensitivity;
+      const fov = this.camera.fov + event.deltaY * (this.zoomSensitivity / 100);
 
       this.camera.fov = MathUtils.clamp(fov, this.fovMin, this.fovMax);
 
