@@ -14,7 +14,7 @@
   $: (height || width) && panoramaViewer.setSize(width, height);
 
   function loadFunction(event: ProgressEvent<FileReader>) {
-    panoramaViewer.updateImage(event.target?.result);
+    panoramaViewer.setPanoramaImage(event.target?.result);
   }
 
   onMount(() => {

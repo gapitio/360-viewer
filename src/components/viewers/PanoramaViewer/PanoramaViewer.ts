@@ -44,7 +44,7 @@ class PanoramaViewer {
     this.animate();
   }
 
-  updateImage = (imageSrc: any) => {
+  setPanoramaImage = (imageSrc: any) => {
     if (this.panorama && this.panorama.material.map) {
       this.panorama.material.map.image.src = imageSrc;
       this.panorama.material.map.needsUpdate = true;
