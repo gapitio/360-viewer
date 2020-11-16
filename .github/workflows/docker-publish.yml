@@ -25,7 +25,7 @@ jobs:
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
       - name: Log into Gapit Container Registry
-        run: echo "${{ secrets.GAPIT_DOCKER_HUB_TOKEN_PUBLIC }}" | docker login https://docker.gapit.io -u ${{ secrets.GAPIT_DOCKER_HUB_USERNAME }} --password-stdin
+        run: echo "${{ secrets.GAPIT_DOCKER_HUB_TOKEN_PUBLIC }}" | docker login https://hub.docker.com -u ${{ secrets.GAPIT_DOCKER_HUB_USERNAME }} --password-stdin
 
       - name: Push image to Gapit Container Registry
         run: |
