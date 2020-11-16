@@ -9,7 +9,7 @@ on:
     tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
 
 env:
-  IMAGE_NAME: production/360-viewer
+  IMAGE_NAME: gapitio/360-viewer
 
 jobs:
   # Push image to docker.gapit.io.
@@ -29,7 +29,7 @@ jobs:
 
       - name: Push image to Gapit Container Registry
         run: |
-          IMAGE_ID=docker.gapit.io/$IMAGE_NAME
+          IMAGE_ID=$IMAGE_NAME
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           # Strip git ref prefix from version
