@@ -21,13 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Log into Gapit Container Registry
+      - name: Log into Docker hub
         run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Push image to Gapit Container Registry
+      - name: Push image to Docker hub
         run: |
           IMAGE_ID=$IMAGE_NAME
           # Change all uppercase to lowercase
