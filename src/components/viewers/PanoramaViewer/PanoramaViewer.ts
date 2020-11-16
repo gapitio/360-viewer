@@ -25,7 +25,7 @@ class PanoramaViewer {
   lastFrameTime = Date.now();
   deltaFrameTime = 0;
 
-  init(canvas: HTMLCanvasElement, { fov = 90 } = {}) {
+  init(canvas: HTMLCanvasElement, { fov = 65 } = {}) {
     this.canvas = canvas;
     this.camera.fov = fov;
 
