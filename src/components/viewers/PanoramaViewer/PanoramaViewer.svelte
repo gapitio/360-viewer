@@ -41,7 +41,7 @@
     bind:clientHeight={height}>
     <canvas
       use:panoramaViewer.init
-      on:wheel={panoramaViewer.controls?.onMouseWheel}
+      on:wheel|passive={panoramaViewer.controls?.onMouseWheel}
       on:pointerdown={panoramaViewer.controls?.onPointerDown} />
   </div>
 </DragAndDrop>
