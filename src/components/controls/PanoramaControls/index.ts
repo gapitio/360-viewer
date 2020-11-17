@@ -53,6 +53,7 @@ class PanoramaControls {
     if (this.canvas) {
       this.canvas.addEventListener("pointermove", this.onPointerMove);
       this.canvas.addEventListener("pointerup", this.onPointerUp);
+      this.canvas.addEventListener("pointerleave", this.onPointerUp);
     }
   };
 
@@ -78,6 +79,7 @@ class PanoramaControls {
     if (this.canvas) {
       this.canvas.removeEventListener("pointermove", this.onPointerMove);
       this.canvas.removeEventListener("pointerup", this.onPointerUp);
+      this.canvas.removeEventListener("pointerleave", this.onPointerUp);
     }
   };
 
