@@ -12,8 +12,12 @@ import {
 } from "three";
 import { PanoramaControls } from "../../controls/PanoramaControls";
 
+interface HTMLPanoramaViewerElement extends HTMLCanvasElement {
+  panoramaViewer?: PanoramaViewer;
+}
+
 class PanoramaViewer {
-  canvas: HTMLCanvasElement | undefined;
+  canvas: HTMLPanoramaViewerElement | undefined;
   controls: PanoramaControls | undefined;
 
   camera = new PerspectiveCamera();
@@ -25,8 +29,10 @@ class PanoramaViewer {
   lastFrameTime = Date.now();
   deltaFrameTime = 0;
 
-  init(canvas: HTMLCanvasElement, { fov = 65 } = {}) {
+  init(canvas: HTMLPanoramaViewerElement, { fov = 65 } = {}) {
     this.canvas = canvas;
+    this.canvas.panoramaViewer = this;
+
     this.camera.fov = fov;
 
     const geometry = new SphereBufferGeometry(500, 60, 40);
