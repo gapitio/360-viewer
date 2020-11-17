@@ -9,9 +9,6 @@
 
   const panoramaViewer = new PanoramaViewer();
 
-  // available to get panoramaViewer values from the console
-  window.panoramaViewer = panoramaViewer;
-
   // When the height or width of the container changes
   // set the size of the renderer to that.
   $: (height || width) && panoramaViewer.setSize(width, height);
