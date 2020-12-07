@@ -1,16 +1,21 @@
 <script lang="ts">
   export let loadFunction: (
-    this: FileReader,
-    ev: ProgressEvent<FileReader>
+    ev: ProgressEvent<FileReader>,
+    filename: string
   ) => any;
   let dragAndDropWrapper: HTMLDivElement;
 
   function onDrop(event: DragEvent) {
     event.preventDefault();
     if (event.dataTransfer && event.dataTransfer.files[0]) {
+      const file = event.dataTransfer.files[0];
       const reader = new FileReader();
-      reader.addEventListener("load", loadFunction, false);
-      reader.readAsDataURL(event.dataTransfer.files[0]);
+
+      reader.onload = function (event) {
+        loadFunction(event, file.name);
+      };
+
+      reader.readAsDataURL(file);
     } else {
       console.warn("Bad file");
     }

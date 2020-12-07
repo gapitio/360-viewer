@@ -1,16 +1,16 @@
 import {
-  Euler,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
   PerspectiveCamera,
   Scene,
   SphereBufferGeometry,
-  TextureLoader,
+  Texture,
   Vector3,
   WebGLRenderer,
 } from "three";
 import { PanoramaControls } from "../../controls/PanoramaControls";
+import { earthScene } from "../../scenes/earthScene";
 
 interface HTMLPanoramaViewerElement extends HTMLCanvasElement {
   panoramaViewer?: PanoramaViewer;
@@ -24,7 +24,8 @@ class PanoramaViewer {
   scene = new Scene();
   renderer = new WebGLRenderer();
   facing = new Vector3();
-  panorama: Mesh<SphereBufferGeometry, MeshBasicMaterial> | undefined;
+  currentScene = "earthScene";
+  scenes: { [key: string]: Scene } = { earthScene: earthScene };
 
   lastFrameTime = Date.now();
   deltaFrameTime = 0;
@@ -35,17 +36,6 @@ class PanoramaViewer {
 
     this.camera.fov = fov;
 
-    const geometry = new SphereBufferGeometry(500, 60, 40);
-    // invert the geometry on the x-axis so that all of the faces point inward
-    geometry.scale(-1, 1, 1);
-
-    const texture = new TextureLoader().load("earth.jpg");
-    const material = new MeshBasicMaterial({ map: texture });
-
-    this.panorama = new Mesh(geometry, material);
-
-    this.scene.add(this.panorama);
-
     this.renderer = new WebGLRenderer({ canvas: canvas });
 
     this.controls = new PanoramaControls();
@@ -54,11 +44,30 @@ class PanoramaViewer {
     this.animate();
   }
 
-  setPanoramaImage = (imageSrc: any) => {
-    if (this.panorama && this.panorama.material.map) {
-      this.panorama.material.map.image.src = imageSrc;
-      this.panorama.material.map.needsUpdate = true;
-    }
+  addScene = (scene: Scene, name: string) => {
+    this.scenes[name] = scene;
+    this.currentScene = name;
+  };
+
+  createSceneFromPanorama = (imageSrc: string, name: string) => {
+    const geometry = new SphereBufferGeometry(500, 60, 40);
+    // invert the geometry on the x-axis so that all of the faces point inward
+    geometry.scale(-1, 1, 1);
+
+    const scene = new Scene();
+
+    const image = document.createElement("img");
+    image.src = imageSrc;
+
+    const texture = new Texture(image);
+    texture.needsUpdate = true;
+    const material = new MeshBasicMaterial({ map: texture });
+
+    const mesh = new Mesh(geometry, material);
+
+    scene.add(mesh);
+
+    this.addScene(scene, name);
   };
 
   setSize = (width: number, height: number) => {
@@ -116,7 +125,7 @@ class PanoramaViewer {
 
     this.camera.lookAt(this.facing);
 
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scenes[this.currentScene], this.camera);
   }
 }
 
