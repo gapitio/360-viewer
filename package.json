@@ -2,7 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "npm run clean && rollup -c",
+    "build": "rollup -c",
     "clean": "rimraf public/build/",
     "dev": "npm run clean && rollup -c -w",
     "lint": "prettier --check .",
