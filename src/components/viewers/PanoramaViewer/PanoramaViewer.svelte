@@ -13,8 +13,12 @@
   // set the size of the renderer to that.
   $: (height || width) && panoramaViewer.setSize(width, height);
 
-  function loadFunction(event: ProgressEvent<FileReader>) {
-    panoramaViewer.setPanoramaImage(event.target?.result);
+  function loadFunction(event: ProgressEvent<FileReader>, filename: string) {
+    const file = event.target;
+
+    if (file) {
+      panoramaViewer.createSceneFromPanorama(file.result as string, filename);
+    }
   }
 
   onMount(() => {
