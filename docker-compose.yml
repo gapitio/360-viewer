@@ -1,7 +1,7 @@
 version: "2"
 services:
   360-image:
-    image: 360-viewer-image:latest
+    image: 360viewer:latest
     container_name: 360-viewer
     volumes:
       - 360-viewer-volume:/360-viewer
