@@ -35,9 +35,6 @@
     color: white;
     width: 200px;
   }
-  svg {
-    transform: translate(-50%, -50%);
-  }
   .type {
     text-transform: uppercase;
   }
