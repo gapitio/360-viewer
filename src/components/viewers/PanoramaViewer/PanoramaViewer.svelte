@@ -37,10 +37,14 @@
     for (const hotspot of container.getElementsByClassName(
       "hotspot"
     ) as HTMLCollectionOf<HTMLElement>) {
-      scene.hotspotContainer().createHotspot(hotspot, {
-        yaw: hotspot.dataset.yaw,
-        pitch: hotspot.dataset.pitch,
-      });
+      scene.hotspotContainer().createHotspot(
+        hotspot,
+        {
+          yaw: Number(hotspot.dataset.yaw),
+          pitch: Number(hotspot.dataset.pitch),
+        },
+        { perspective: { radius: 1024 } }
+      );
     }
   });
 </script>
