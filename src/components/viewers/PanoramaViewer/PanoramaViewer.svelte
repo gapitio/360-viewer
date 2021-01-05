@@ -58,5 +58,5 @@
 <div bind:this={container}>
   <div bind:this={panoramaContainer} class="panorama-container" />
   <InfoHotspot yaw={3} pitch={0.1}>{0}</InfoHotspot>
-  <DataHotspot yaw={3} pitch={0.4}>{0}</DataHotspot>
+  <DataHotspot yaw={-1.9} pitch={0.56} type="energy" value="2">{0}</DataHotspot>
 </div>
