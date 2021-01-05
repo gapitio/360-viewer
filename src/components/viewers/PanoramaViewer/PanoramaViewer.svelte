@@ -46,6 +46,10 @@
         { perspective: { radius: 1024 } }
       );
     }
+
+    panoramaContainer.addEventListener("click", function (e) {
+      console.log(view.screenToCoordinates({ x: e.x, y: e.y }));
+    });
   });
 </script>
 
