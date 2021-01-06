@@ -7,8 +7,14 @@
         {
           "type": "data",
           "dataType": "energy",
-          "yaw": -1.5,
-          "pitch": 0.56
+          "yaw": 1,
+          "pitch": 0.5
+        },
+        {
+          "type": "scene",
+          "sceneIndex": 1,
+          "yaw": 0,
+          "pitch": 0
         }
       ]
     },
@@ -19,14 +25,20 @@
         {
           "type": "data",
           "dataType": "energy",
-          "yaw": -1.9,
-          "pitch": 0.56
+          "yaw": 0.2,
+          "pitch": -0.5
         },
         {
           "type": "data",
           "dataType": "energy",
-          "yaw": -1.2,
+          "yaw": -0.2,
           "pitch": 0.56
+        },
+        {
+          "type": "scene",
+          "sceneIndex": 0,
+          "yaw": 0,
+          "pitch": 0
         }
       ]
     }
