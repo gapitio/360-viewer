@@ -1,6 +1,4 @@
 <script lang="ts">
-  export let yaw: number;
-  export let pitch: number;
   export let type: "flow" | "energy" | "power" | "temperature";
   export let value: string | number;
 
@@ -40,7 +38,7 @@
   }
 </style>
 
-<div bind:this={elt} class="hotspot" data-yaw={yaw} data-pitch={pitch}>
+<div bind:this={elt}>
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="100%"

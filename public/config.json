@@ -1,0 +1,34 @@
+{
+  "scenes": [
+    {
+      "name": "Earth",
+      "url": "earth.jpg",
+      "hotspots": [
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": -1.5,
+          "pitch": 0.56
+        }
+      ]
+    },
+    {
+      "name": "Hangar",
+      "url": "hangar.jpg",
+      "hotspots": [
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": -1.9,
+          "pitch": 0.56
+        },
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": -1.2,
+          "pitch": 0.56
+        }
+      ]
+    }
+  ]
+}
