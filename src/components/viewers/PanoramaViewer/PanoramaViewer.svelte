@@ -127,12 +127,19 @@
     margin: 0;
     padding: 0;
   }
-  .scene-list li {
-    background-color: #1b191c55;
-    padding: 4px 6px;
+  .scene-list input {
+    display: none;
   }
-  .scene-list li:hover {
+  .scene-list label {
+    background-color: #1b191c55;
+    display: block;
+    padding: 10px 16px;
+  }
+  .scene-list label:hover {
     background-color: #1b191ce0;
+  }
+  .scene-list label.active {
+    background-color: #1b191cbb;
   }
 </style>
 
@@ -163,7 +170,7 @@
   <ul>
     {#each scenes as sceneConfig, sceneIndex}
       <li>
-        <label><input
+        <label class={sceneIndex == currentSceneIndex ? 'active' : ''}><input
             type="radio"
             bind:group={currentSceneIndex}
             value={sceneIndex} />
