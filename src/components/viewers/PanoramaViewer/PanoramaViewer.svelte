@@ -85,7 +85,7 @@
           1024,
           (100 * Math.PI) / 180
         );
-        const view = new Marzipano.RectilinearView({ yaw: Math.PI }, limiter);
+        const view = new Marzipano.RectilinearView({ yaw: 0 }, limiter);
 
         // Create scene.
         const scene = viewer.createScene({
