@@ -20,6 +20,7 @@
                 sceneIndex: number;
                 yaw: number;
                 pitch: number;
+                extraTransforms?: string;
               }
             ];
           }
@@ -61,7 +62,12 @@
           yaw: Number(hotspot.dataset.yaw),
           pitch: Number(hotspot.dataset.pitch),
         },
-        { perspective: { radius: 1024 } }
+        {
+          perspective: {
+            radius: 1024,
+            extraTransforms: hotspot.dataset.extraTransforms,
+          },
+        }
       );
     }
   }
@@ -154,7 +160,8 @@
           data-scene-index={sceneIndex}
           use:addHotspot
           data-yaw={hotspotConfig.yaw}
-          data-pitch={hotspotConfig.pitch}>
+          data-pitch={hotspotConfig.pitch}
+          data-extra-transforms={hotspotConfig.extraTransforms}>
           {#if hotspotConfig.type == 'data'}
             <DataHotspot type={hotspotConfig.dataType} value="2">
               {0}
