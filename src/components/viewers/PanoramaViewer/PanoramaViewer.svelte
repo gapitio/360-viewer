@@ -25,9 +25,8 @@
       }
     | undefined;
 
-  let currentSceneName: string;
-  let currentScene: any;
-  const scenes: any[] = [];
+  let scenes: any[] = [];
+  let currentSceneIndex = 0;
 
   const baseURL = window.location.href;
   const configPath = baseURL + "/config.json";
@@ -43,9 +42,12 @@
   }
 
   function switchScene(scene: any) {
-    currentScene = scene;
     // Display scene.
     scene.switchTo();
+  }
+
+  $: if (currentSceneIndex != null && scenes.length > 0) {
+    switchScene(scenes[currentSceneIndex].scene);
   }
 
   function addHotspot(hotspot: HTMLElement) {
@@ -68,8 +70,6 @@
     config = await getConfig();
     if (config && config.scenes) {
       for (const sceneConfig of config.scenes) {
-        console.log(sceneConfig);
-
         // Create source.
         const source = Marzipano.ImageUrlSource.fromString(
           baseURL + sceneConfig.url
@@ -93,17 +93,16 @@
           pinFirstLevel: true,
         });
 
-        scenes.push({ name: sceneConfig.name, scene: scene });
+        scenes = [...scenes, { name: sceneConfig.name, scene: scene }];
       }
     }
 
-    if (scenes.length > 0) {
-      switchScene(scenes[0].scene);
-      currentSceneName = scenes[0].name;
-    }
-
     panoramaContainer.addEventListener("click", (e) => {
-      console.log(currentScene.view().screenToCoordinates({ x: e.x, y: e.y }));
+      console.log(
+        scenes[currentSceneIndex].scene
+          .view()
+          .screenToCoordinates({ x: e.x, y: e.y })
+      );
     });
   });
 </script>
@@ -161,17 +160,15 @@
 </div>
 
 <div class="scene-list">
-  {#if config}
-    <ul>
-      {#each config.scenes as sceneConfig, sceneIndex}
-        <li on:click={() => switchScene(scenes[sceneIndex].scene)}>
-          <label><input
-              type="radio"
-              bind:group={currentSceneName}
-              value={sceneConfig.name} />
-            {sceneConfig.name}</label>
-        </li>
-      {/each}
-    </ul>
-  {/if}
+  <ul>
+    {#each scenes as sceneConfig, sceneIndex}
+      <li>
+        <label><input
+            type="radio"
+            bind:group={currentSceneIndex}
+            value={sceneIndex} />
+          {sceneConfig.name}</label>
+      </li>
+    {/each}
+  </ul>
 </div>
