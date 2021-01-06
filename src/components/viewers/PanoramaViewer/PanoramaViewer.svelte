@@ -1,6 +1,7 @@
 <script lang="ts">
   import DataHotspot from "../../hotspot/DataHotspot.svelte";
   import InfoHotspot from "../../hotspot/InfoHotspot.svelte";
+  import SceneHotspot from "../../hotspot/SceneHotspot.svelte";
   import { onMount } from "svelte";
   import Marzipano from "marzipano";
 
@@ -16,6 +17,7 @@
               {
                 type: string;
                 dataType: "flow" | "energy" | "power" | "temperature";
+                sceneIndex: number;
                 yaw: number;
                 pitch: number;
               }
@@ -157,6 +159,11 @@
             <DataHotspot type={hotspotConfig.dataType} value="2">
               {0}
             </DataHotspot>
+          {:else if hotspotConfig.type == 'scene'}
+            <SceneHotspot
+              func={() => {
+                currentSceneIndex = hotspotConfig.sceneIndex;
+              }} />
           {:else if hotspotConfig.type == 'info'}
             <InfoHotspot />
           {/if}
