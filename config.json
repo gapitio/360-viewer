@@ -1,0 +1,46 @@
+{
+  "scenes": [
+    {
+      "name": "Earth",
+      "url": "earth.jpg",
+      "hotspots": [
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": 1,
+          "pitch": 0.5
+        },
+        {
+          "type": "scene",
+          "sceneIndex": 1,
+          "yaw": 0,
+          "pitch": 0
+        }
+      ]
+    },
+    {
+      "name": "Hangar",
+      "url": "hangar.jpg",
+      "hotspots": [
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": 0.2,
+          "pitch": -0.5
+        },
+        {
+          "type": "data",
+          "dataType": "energy",
+          "yaw": -0.2,
+          "pitch": 0.56
+        },
+        {
+          "type": "scene",
+          "sceneIndex": 0,
+          "yaw": 0,
+          "pitch": 0
+        }
+      ]
+    }
+  ]
+}
