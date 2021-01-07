@@ -17,6 +17,7 @@
               {
                 type: string;
                 dataType: "flow" | "energy" | "power" | "temperature";
+                title: string;
                 sceneIndex: number;
                 yaw: number;
                 pitch: number;
@@ -84,7 +85,7 @@
         );
 
         // Create geometry.
-        const geometry = new Marzipano.EquirectGeometry([{ width: 2048 }]);
+        const geometry = new Marzipano.EquirectGeometry([{ width: 4096 }]);
 
         // Create view.
         const limiter = Marzipano.RectilinearView.limit.traditional(
@@ -164,7 +165,7 @@
           data-extra-transforms={hotspotConfig.extraTransforms}>
           {#if hotspotConfig.type == 'data'}
             <DataHotspot type={hotspotConfig.dataType} value="2">
-              {0}
+              <tspan slot="title">{hotspotConfig.title}</tspan>
             </DataHotspot>
           {:else if hotspotConfig.type == 'scene'}
             <SceneHotspot

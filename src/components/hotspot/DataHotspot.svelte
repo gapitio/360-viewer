@@ -61,7 +61,7 @@
         font-size="16"
         font-family="OpenSans, Open Sans"
         letter-spacing="0.01em">
-        <slot name="type">{type}</slot>
+        <slot name="title">{type}</slot>
       </text>
       <text
         class="value"
