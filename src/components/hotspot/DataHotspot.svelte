@@ -23,15 +23,16 @@
 
   let elt: HTMLElement;
 
-  setInterval(() => {
-    value = (Math.random() * 1000).toFixed(2);
-  }, 1000);
+  // setInterval(() => {
+  //   value = (Math.random() * 1000).toFixed(2);
+  // }, 1000);
 </script>
 
 <style>
   div {
     color: white;
     width: 200px;
+    transform: translate(-50%, -50%);
   }
   .type {
     text-transform: uppercase;
@@ -70,7 +71,9 @@
         font-size="26"
         font-family="OpenSans-Semibold, Open Sans"
         font-weight="600">
-        <slot name="value">{`${value} ${types[type].unit}`}</slot>
+        <slot name="value">{value}</slot>
+        <slot name="unit">{` ${types[type].unit}`}</slot>
+        <slot />
       </text>
     </g>
   </svg>

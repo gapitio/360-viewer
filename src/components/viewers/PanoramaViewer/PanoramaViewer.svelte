@@ -4,32 +4,50 @@
   import SceneHotspot from "../../hotspot/SceneHotspot.svelte";
   import { onMount } from "svelte";
   import Marzipano from "marzipano";
+  import InfluxData from "../../Data/InfluxData.svelte";
+  import RandomData from "../../Data/RandomData.svelte";
 
   let container: HTMLElement;
   let panoramaContainer: HTMLElement;
-  let config:
-    | {
-        scenes: [
+  let config: {
+    scenes: [
+      {
+        name: string;
+        url: string;
+        hotspots: [
           {
-            name: string;
-            url: string;
-            hotspots: [
-              {
-                type: string;
-                dataType: "flow" | "energy" | "power" | "temperature";
-                title: string;
-                sceneIndex: number;
-                yaw: number;
-                pitch: number;
-                extraTransforms?: string;
-              }
-            ];
+            type: string;
+            dataType: "flow" | "energy" | "power" | "temperature";
+            data: {
+              database?: string;
+              type?: "influx" | "random";
+              url?: string;
+              token?: string;
+              organization?: string;
+              query?: string;
+            };
+            title: string;
+            sceneIndex: number;
+            yaw: number;
+            pitch: number;
+            extraTransforms?: string;
           }
         ];
       }
-    | undefined;
+    ];
+    databases:
+      | {
+          [key: string]: {
+            type: "influx" | "random";
+            url?: string;
+            token?: string;
+            organization?: string;
+          };
+        }
+      | undefined;
+  };
 
-  let scenes: any[] = [];
+  let scenes: { name: string; scene: any }[] = [];
   let currentSceneIndex = 0;
 
   const baseURL = window.location.href;
@@ -65,8 +83,7 @@
         },
         {
           perspective: {
-            radius: 1024,
-            extraTransforms: hotspot.dataset.extraTransforms,
+            extraTransforms: "rotateZ(-0.5deg)",
           },
         }
       );
@@ -154,28 +171,44 @@
 
 <div bind:this={container}>
   <div bind:this={panoramaContainer} class="panorama-container" />
-  {#if config}
+  {#if config && scenes.length > 0}
     {#each config.scenes as sceneConfig, sceneIndex}
       {#each sceneConfig.hotspots as hotspotConfig}
-        <div
-          data-scene-index={sceneIndex}
-          use:addHotspot
-          data-yaw={hotspotConfig.yaw}
-          data-pitch={hotspotConfig.pitch}
-          data-extra-transforms={hotspotConfig.extraTransforms}>
-          {#if hotspotConfig.type == 'data'}
-            <DataHotspot type={hotspotConfig.dataType} value="2">
-              <tspan slot="title">{hotspotConfig.title}</tspan>
-            </DataHotspot>
-          {:else if hotspotConfig.type == 'scene'}
-            <SceneHotspot
-              func={() => {
-                currentSceneIndex = hotspotConfig.sceneIndex;
-              }} />
-          {:else if hotspotConfig.type == 'info'}
-            <InfoHotspot />
-          {/if}
-        </div>
+        {#if currentSceneIndex == sceneIndex}
+          <div
+            data-scene-index={sceneIndex}
+            use:addHotspot
+            data-yaw={hotspotConfig.yaw}
+            data-pitch={hotspotConfig.pitch}
+            data-extra-transforms={hotspotConfig.extraTransforms}>
+            {#if hotspotConfig.type == 'data'}
+              <DataHotspot type={hotspotConfig.dataType} value={252}>
+                <tspan slot="title">{hotspotConfig.title}</tspan>
+                <tspan slot="value">
+                  {#if hotspotConfig.data.database && config.databases && config.databases[hotspotConfig.data.database]}
+                    {#if config.databases[hotspotConfig.data.database].type == 'influx'}
+                      <InfluxData
+                        url={config.databases[hotspotConfig.data.database].url ?? ''}
+                        token={config.databases[hotspotConfig.data.database].token ?? ''}
+                        organization={config.databases[hotspotConfig.data.database].organization ?? ''}
+                        query={hotspotConfig.data.query ?? ''} />
+                    {/if}
+                    {#if config.databases[hotspotConfig.data.database].type == 'random'}
+                      <RandomData />
+                    {/if}
+                  {/if}
+                </tspan>
+              </DataHotspot>
+            {:else if hotspotConfig.type == 'scene'}
+              <SceneHotspot
+                func={() => {
+                  currentSceneIndex = hotspotConfig.sceneIndex;
+                }} />
+            {:else if hotspotConfig.type == 'info'}
+              <InfoHotspot />
+            {/if}
+          </div>
+        {/if}
       {/each}
     {/each}
   {/if}
