@@ -7,6 +7,10 @@
         {
           "type": "data",
           "dataType": "energy",
+          "data": {
+            "database": "random"
+          },
+          "title": "Energy",
           "yaw": 1,
           "pitch": 0.5
         },
@@ -25,12 +29,33 @@
         {
           "type": "data",
           "dataType": "energy",
+          "data": {
+            "database": "influxDB",
+            "query": "from(bucket:\"bucket\") |> range(start: -1d) |> filter(fn: (r) => r._measurement == \"temperature\") |> filter(fn: (r) => r[\"location\"] == \"browser\") |> last()"
+          },
+          "title": "Energy",
           "yaw": 0.2,
           "pitch": -0.5
         },
         {
           "type": "data",
           "dataType": "energy",
+          "data": {
+            "database": "influxDB",
+            "query": "from(bucket:\"bucket\") |> range(start: -1d) |> filter(fn: (r) => r._measurement == \"temperature\") |> filter(fn: (r) => r[\"location\"] == \"browser\") |> last()"
+          },
+          "title": "Energy",
+          "yaw": 1.57,
+          "pitch": 0
+        },
+        {
+          "type": "data",
+          "dataType": "energy",
+          "data": {
+            "database": "influxDB",
+            "query": "from(bucket:\"bucket\") |> range(start: -1d) |> filter(fn: (r) => r._measurement == \"temperature\") |> filter(fn: (r) => r[\"location\"] == \"browser\") |> last()"
+          },
+          "title": "Energy",
           "yaw": -0.2,
           "pitch": 0.56
         },
@@ -42,5 +67,16 @@
         }
       ]
     }
-  ]
+  ],
+  "databases": {
+    "influxDB": {
+      "type": "influx",
+      "url": "http://localhost:8086",
+      "token": "S5X9DfoF08YCw5B99ws8_XZhp3LBFshFA3CA9YfAgRTGGg-aukuqPw94-y2qdS4h9xnMm9v7Y1e84rG1YXAqwg==",
+      "organization": "org"
+    },
+    "random": {
+      "type": "random"
+    }
+  }
 }
